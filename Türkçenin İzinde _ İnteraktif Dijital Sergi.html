@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#173b37">
+<title>Türkçenin İzinde | İnteraktif Dijital Sergi</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap');
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--forest:#173b37;--forest2:#24554c;--red:#a94336;--gold:#d3a65b;--cream:#f7f0df;--paper:#fffaf0;--ink:#292b25;--muted:#716d60;--line:#dfd1b5;--teal:#6e9b8d;--shadow:0 18px 55px #152b251c}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif}
+button{font:inherit;cursor:pointer}a{color:inherit}
+.topline{height:7px;background:linear-gradient(90deg,var(--red),var(--gold),var(--forest2),var(--gold),var(--red))}
+header{position:relative;overflow:hidden;background:radial-gradient(circle at 15% 10%,#ffffff12 0 2px,transparent 3px),radial-gradient(circle at 85% 75%,#ffffff12 0 2px,transparent 3px),linear-gradient(135deg,#153a35,#28594d 65%,#183e39);color:#fff9e9;padding:20px 22px 78px}
+.header-inner{max-width:1180px;margin:auto;position:relative;z-index:1}
+.topnav{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:70px}
+.brand{font-weight:700;letter-spacing:2px;font-size:12px;text-transform:uppercase;color:#f1d9a7}
+.pill{border:1px solid #ffffff55;border-radius:30px;padding:9px 14px;color:#fff8e8;background:#ffffff0b;font-size:12px}
+.hero{max-width:790px}
+.eyebrow{font-size:12px;letter-spacing:4px;text-transform:uppercase;color:#e8c98d;font-weight:700}
+h1,h2,h3{font-family:'Playfair Display',Georgia,serif}
+h1{font-size:clamp(46px,8vw,94px);line-height:.98;letter-spacing:-2px;margin:18px 0 20px;max-width:850px}
+.hero p{font-size:clamp(16px,2vw,20px);line-height:1.75;color:#f4ead5;max-width:680px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.primary,.secondary{border-radius:30px;padding:13px 20px;font-weight:700;border:0}
+.primary{background:#e2bd78;color:#2e3027}.secondary{background:transparent;border:1px solid #ffffff75;color:white}
+.hero-stamp{position:absolute;right:4%;bottom:32px;width:190px;height:190px;border:1px solid #d9b87388;border-radius:50%;display:grid;place-items:center;text-align:center;color:#efd8a8;transform:rotate(10deg);font-family:'Playfair Display';font-size:20px;line-height:1.3}
+.hero-stamp:before{content:"";position:absolute;inset:9px;border:1px dashed #d9b87388;border-radius:50%}
+main{max-width:1180px;margin:-38px auto 0;padding:0 22px 80px;position:relative;z-index:2}
+.progress-card{display:flex;align-items:center;justify-content:space-between;gap:15px;background:var(--paper);padding:18px 22px;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+.progress-card strong{font-family:'Playfair Display';font-size:20px;color:var(--forest)}
+.progress-track{height:8px;background:#e9dfca;border-radius:20px;overflow:hidden;flex:1;max-width:360px}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--red),var(--gold),var(--teal));transition:width .3s}
+.progress-label{font-size:12px;color:var(--muted);white-space:nowrap}
+.layout{display:grid;grid-template-columns:245px minmax(0,1fr);gap:24px;margin-top:26px;align-items:start}
+.sidebar{position:sticky;top:18px;background:#1c433d;color:#f8efd9;border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+.side-title{font-family:'Playfair Display';font-size:21px;margin:4px 8px 14px;color:#f0d49d}
+.room-link{display:flex;width:100%;align-items:center;gap:11px;text-align:left;border:0;background:transparent;color:#e9e3d4;padding:11px 10px;border-radius:10px;margin:3px 0;font-size:13px}
+.room-link:hover,.room-link.active{background:#ffffff18;color:#fff}
+.room-link .num{width:25px;height:25px;display:grid;place-items:center;border:1px solid #d7bd83;border-radius:50%;font-size:11px;color:#f0d49d;flex-shrink:0}
+.side-note{font-size:11px;line-height:1.6;color:#c9d2c7;border-top:1px solid #ffffff25;margin-top:14px;padding:14px 8px 4px}
+.content{min-width:0}
+.room{display:none;animation:rise .35s ease}.room.active{display:block}
+@keyframes rise{from{opacity:.2;transform:translateY(9px)}to{opacity:1;transform:none}}
+.room-heading{padding:8px 2px 20px}
+.room-kicker{font-size:11px;font-weight:700;letter-spacing:3px;color:var(--red);text-transform:uppercase}
+.room-heading h2{font-size:clamp(32px,5vw,50px);line-height:1.06;color:var(--forest);margin:9px 0}
+.room-heading p{max-width:750px;line-height:1.75;color:var(--muted);margin:0;font-size:15px}
+.feature{background:linear-gradient(120deg,#fffaf0,#f0e4ca);border:1px solid var(--line);border-radius:18px;padding:24px;display:grid;grid-template-columns:1.3fr .7fr;gap:20px;align-items:center;margin-bottom:18px}
+.feature h3{font-size:27px;color:var(--red);margin:0 0 9px}.feature p{line-height:1.75;margin:0;color:#575449}
+.seal{justify-self:center;width:150px;height:150px;border-radius:50%;border:2px solid var(--gold);outline:1px dashed var(--gold);outline-offset:7px;display:grid;place-items:center;text-align:center;color:var(--forest);font-family:'Playfair Display';font-size:21px;background:#f8edda;transform:rotate(-7deg)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.exhibit{background:var(--paper);border:1px solid var(--line);border-radius:15px;padding:20px;box-shadow:0 5px 20px #47371b09;position:relative;overflow:hidden}
+.exhibit:after{content:"";position:absolute;right:-24px;top:-28px;width:90px;height:90px;border:1px solid #d7bf8f66;border-radius:50%}
+.exhibit .category{font-size:10px;text-transform:uppercase;letter-spacing:2px;font-weight:700;color:var(--red)}
+.exhibit h3{font-size:22px;color:var(--forest);margin:8px 0}
+.exhibit p{font-size:14px;line-height:1.7;color:#5f5b50;margin:7px 0}
+.exhibit blockquote{margin:12px 0 0;padding:11px 13px;background:#f1e7d3;border-left:3px solid var(--gold);font-family:'Playfair Display';font-style:italic;line-height:1.55}
+.expand{border:0;background:transparent;color:var(--red);font-weight:700;font-size:12px;padding:10px 0 0}
+.detail{display:none;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:13px;line-height:1.7;color:#59564c}
+.exhibit.open .detail{display:block}
+.wide{grid-column:1/-1}
+.quote-band{margin:18px 0;background:#20483f;color:#fff5df;padding:24px;border-radius:16px;text-align:center}
+.quote-band p{font-family:'Playfair Display';font-size:clamp(19px,3vw,27px);line-height:1.5;margin:0}
+.quote-band span{display:block;margin-top:9px;color:#e5c27f;font-size:11px;letter-spacing:2px;text-transform:uppercase}
+.timeline{border-left:2px solid var(--gold);margin:20px 0 0 10px;padding-left:22px}
+.timeitem{position:relative;margin:0 0 20px;background:var(--paper);border:1px solid var(--line);padding:17px;border-radius:12px}
+.timeitem:before{content:"";position:absolute;width:12px;height:12px;border-radius:50%;background:var(--red);left:-29px;top:22px;border:3px solid var(--cream)}
+.timeitem h3{color:var(--forest);margin:0 0 6px;font-size:20px}.timeitem p{margin:0;line-height:1.65;color:var(--muted);font-size:14px}
+.mapbox{background:#eee2c8;border-radius:16px;padding:20px;margin-top:16px}
+.mapbox h3{color:var(--forest);margin:0 0 8px}.mapbox p{font-size:13px;line-height:1.6;color:#5e594d}
+.region-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.region{background:#fff9ed;border:1px solid #d8c49d;padding:13px;border-radius:11px;font-size:13px;line-height:1.6}
+.region b{display:block;color:var(--red);margin-bottom:4px}
+.quiz{background:#fffaf0;border:1px solid var(--line);padding:22px;border-radius:16px;margin-top:18px}
+.quiz h3{margin:0 0 12px;color:var(--forest);font-size:24px}
+.question{padding:13px 0;border-top:1px solid #e7dcc7}.question:first-of-type{border-top:0}
+.question p{font-weight:700;font-size:14px}
+.answers{display:flex;flex-wrap:wrap;gap:8px}
+.answers button{border:1px solid #cdb98f;background:#f6ecd9;color:#493e2e;border-radius:20px;padding:8px 12px;font-size:12px}
+.answers button.chosen{background:var(--forest);color:white;border-color:var(--forest)}
+.feedback{font-size:12px;font-weight:700;margin-top:7px;min-height:17px}
+footer{background:#153a35;color:#f4ead5;text-align:center;padding:32px 20px;border-top:6px double var(--gold)}
+footer h2{font-size:26px;margin:0 0 8px}footer p{font-size:13px;line-height:1.7;color:#d8d1bf}
+.modal{display:none;position:fixed;inset:0;background:#101b19c9;z-index:20;place-items:center;padding:18px}.modal.show{display:grid}
+.modal-card{background:var(--paper);max-width:550px;width:100%;border-radius:18px;padding:28px;position:relative;box-shadow:0 20px 80px #0005}
+.modal-card h2{color:var(--forest);margin-top:0}.modal-card p{line-height:1.7;color:#5d594f}
+.close{position:absolute;right:14px;top:12px;border:0;background:#eee1c7;border-radius:50%;width:34px;height:34px;font-size:20px}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.sidebar{position:static;display:flex;overflow:auto;gap:4px;align-items:center}.side-title,.side-note{display:none}.room-link{white-space:nowrap;width:auto;flex-shrink:0}.room-link .num{display:none}.hero-stamp{width:125px;height:125px;font-size:15px;right:4%;bottom:20px}.topnav{margin-bottom:50px}}
+@media(max-width:600px){header{padding-bottom:65px}.hero-stamp{display:none}.grid,.feature,.region-list{grid-template-columns:1fr}.progress-card{flex-wrap:wrap}.progress-track{order:3;max-width:none;flex-basis:100%}.wide{grid-column:auto}.room-heading h2{font-size:35px}}
+@media print{nav,.sidebar,.hero-actions,.progress-card,.expand,.quiz{display:none!important}.layout{display:block}.room{display:block!important;break-inside:avoid}header{padding:20px;background:#173b37!important}main{margin:0;max-width:none}.exhibit{break-inside:avoid}}
+.roomnav{display:flex;justify-content:space-between;gap:12px;margin-top:26px}
+.roomnav button{flex:1;border:1px solid var(--line);background:var(--paper);color:var(--forest);padding:14px 16px;border-radius:14px;font-weight:700;text-align:left;font-size:13px}
+.roomnav button:last-child{text-align:right;background:var(--forest);color:#fff9e9;border-color:var(--forest)}
+.roomnav button:hover{transform:translateY(-2px)}
+.exhibit{transition:transform .25s,box-shadow .25s}.exhibit:hover{transform:translateY(-3px);box-shadow:0 12px 30px #47371b1a}
+
+.ticker{position:absolute;left:0;right:0;bottom:40px;overflow:hidden;white-space:nowrap;opacity:.55;pointer-events:none}
+.ticker-track{display:inline-block;animation:tick 40s linear infinite;font-family:'Playfair Display',Georgia,serif;font-style:italic;font-size:17px;color:#f1d9a7}
+.ticker-track span{margin:0 18px}.ticker-track span:nth-child(even){color:#fff9e9;opacity:.7}
+@keyframes tick{to{transform:translateX(-50%)}}
+.hl{position:absolute;font-family:'Playfair Display',Georgia,serif;font-weight:800;color:#fff;opacity:.07;line-height:1;pointer-events:none;animation:flt 9s ease-in-out infinite}
+.hl:nth-of-type(2){animation-delay:-3s}.hl:nth-of-type(3){animation-delay:-6s}
+@keyframes flt{50%{transform:translateY(-18px) rotate(6deg)}}
+.icon{position:absolute;right:16px;top:14px;font-size:24px;z-index:1}
+.exhibit:hover{border-color:var(--gold)}
+.fact{background:linear-gradient(135deg,#fffaf0,#f3e6c8)}
+.fact .big{font-family:'Playfair Display',Georgia,serif;font-size:38px;color:var(--red);line-height:1}
+.rare{border-left:4px solid var(--red)}
+.badge{display:inline-block;background:var(--red);color:#fff;font-size:10px;letter-spacing:1.5px;font-weight:700;padding:3px 8px;border-radius:20px;margin-bottom:6px}
+#randSoz{font-size:17px;min-height:56px;color:var(--forest)}
+#deyim .grid>.exhibit:nth-child(3n+1){border-top:4px solid var(--red)}#deyim .grid>.exhibit:nth-child(3n+2){border-top:4px solid var(--gold)}#deyim .grid>.exhibit:nth-child(3n){border-top:4px solid var(--teal)}
+#deyim blockquote{background:linear-gradient(90deg,#f6e9c9,#f1e7d3)}
+.flips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:12px}
+.flip{perspective:800px;height:170px;cursor:pointer;border:0;background:none;padding:0}
+.flip-in{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.flip.on .flip-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px;border:1px solid var(--line)}
+.face.f{background:var(--paper)}.face.f span{font-size:42px}.face.f b{font-family:'Playfair Display',Georgia,serif;font-size:15px;color:var(--forest);margin-top:6px;line-height:1.3}
+.face.b{transform:rotateY(180deg);background:var(--forest);color:#fff5df;font-size:13px;line-height:1.55}
+#duelA button{text-align:left;border-radius:12px;padding:11px 14px;font-size:13px}
+#duelA button:disabled{opacity:.7}
+.reveal{opacity:0;transform:translateY(12px);transition:opacity .6s,transform .6s}.reveal.in{opacity:1;transform:none}.exhibit.reveal.in:hover{transform:translateY(-3px)}
+@media(max-width:850px){.flips{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.flip-in{transition:none}}
+@media(prefers-reduced-motion:reduce){.ticker-track,.hl{animation:none}}
+#qrbox{display:grid;place-items:center;background:#fff;border-radius:14px;padding:16px;margin:14px auto;width:max-content;border:1px solid var(--line)}
+.qrurl{word-break:break-all;font-size:12px;text-align:center;color:var(--muted)}
+.game{margin:24px 0;background:linear-gradient(135deg,#153a35,#24554c);color:#fff9e9;border-radius:20px;padding:24px;box-shadow:var(--shadow);border:1px solid #d3a65b66}
+.game h3{font-size:clamp(24px,4vw,32px);color:#f1d9a7;margin:6px 0}
+.game-tag{font-size:11px;letter-spacing:3px;font-weight:700;color:#e8c98d}
+.game-sub{font-size:14px;line-height:1.7;color:#e9e3d4}
+.hud{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:14px;margin:12px 0 8px;flex-wrap:wrap}
+.tbar{height:8px;background:#ffffff22;border-radius:8px;overflow:hidden}.tbar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#e2bd78,#a94336)}
+.gsent{font-family:'Playfair Display',Georgia,serif;font-size:clamp(20px,3.4vw,27px);line-height:1.5;margin:20px 0;min-height:80px}
+.foreign{background:#a9433688;border-radius:6px;padding:0 6px;border-bottom:3px solid #e2bd78}
+.good{background:#28704f99;border-radius:6px;padding:0 6px}
+.gopts{display:grid;gap:10px}
+.gopts button{border:1px solid #ffffff44;background:#ffffff14;color:#fff9e9;border-radius:14px;padding:14px;font-size:15px;font-weight:600;text-align:left}
+.gopts button.ok{background:#28704f;border-color:#6fd3a0}.gopts button.no{background:#a94336;border-color:#f0a99f}
+.gfb{min-height:44px;margin-top:12px;font-size:14px;line-height:1.6;color:#f1d9a7}
+.gend{text-align:center;padding:8px 0}.gend .rank{font-family:'Playfair Display',Georgia,serif;font-size:30px;color:#f1d9a7}
+.gend p{line-height:1.7;font-size:14px;color:#e9e3d4}
+@media print{.game{display:none!important}}
+</style>
+</head>
+<body>
+<div class="topline"></div>
+<header>
+ <div class="header-inner">
+  <div class="topnav"><div class="brand">✦ Kültür • Hafıza • Dil</div><div class="pill">İNTERAKTİF DİJİTAL SERGİ</div></div>
+  <div class="hero">
+   <div class="eyebrow">Türkçenin söz atlasına davetlisiniz</div>
+   <h1>Türkçenin<br>İzinde</h1>
+   <p>Deyimlerden destanlara, eski kelimelerden yöresel söyleyişlere uzanan bir yolculuk… Her kelimenin ardında bir hikâye, her sözün içinde kültürümüzden bir iz var.</p>
+   <div class="hero-actions"><button class="primary" onclick="startTour()">Sergiyi gezmeye başla ↓</button><button class="secondary" onclick="openAbout()">Bu sergi hakkında</button></div>
+  </div>
+  <div class="hero-stamp">DİLİMİZ<br>GEÇMİŞİMİZ<br>GELECEĞİMİZ</div>
+ </div>
+<span class="hl" style="font-size:210px;right:6%;top:30px">Ğ</span><span class="hl" style="font-size:150px;right:28%;top:150px">Ş</span><span class="hl" style="font-size:120px;right:2%;top:290px">İ</span>
+ <div class="ticker"><div class="ticker-track"><span>yadigâr</span><span>gönül</span><span>hasret</span><span>nazar</span><span>kelebek</span><span>ocak</span><span>emanet</span><span>yürek</span><span>sılâ</span><span>yadigâr</span><span>gönül</span><span>hasret</span><span>nazar</span><span>kelebek</span><span>ocak</span><span>emanet</span><span>yürek</span><span>sılâ</span></div></div>
+</header>
+<main>
+ <div class="progress-card"><strong>Keşif yolculuğun</strong><div class="progress-track"><div class="progress-fill" id="progress"></div></div><div class="progress-label" id="progressText">0 / 7 salon gezildi</div></div>
+ <div class="layout">
+  <aside class="sidebar">
+   <div class="side-title">Sergi salonları</div>
+   <button class="room-link active" data-room="giris"><span class="num">01</span> Başlangıç</button>
+   <button class="room-link" data-room="atasozu"><span class="num">02</span> Atasözleri Odası</button>
+   <button class="room-link" data-room="deyim"><span class="num">03</span> Deyimler Sokağı</button>
+   <button class="room-link" data-room="kelime"><span class="num">04</span> Kelime Hazinesi</button>
+   <button class="room-link" data-room="yore"><span class="num">05</span> Anadolu'nun Sesleri</button>
+   <button class="room-link" data-room="edebiyat"><span class="num">06</span> Edebiyat Konağı</button>
+   <button class="room-link" data-room="gelecek"><span class="num">07</span> Geleceğe Miras</button>
+   <div class="side-note">Bir salon seçerek gezmeye başlayın. Kartların altındaki “Ayrıntıyı keşfet” alanlarına tıklayarak ek bilgileri açabilirsiniz.</div>
+  </aside>
+  <div class="content">
+   <section class="room active" id="giris">
+    <div class="room-heading"><div class="room-kicker">01 • Karşılama salonu</div><h2>Hoş geldiniz!</h2><p>Bu sergi, Türkçenin yalnızca kelimelerden oluşmadığını; tarih, gelenek, duygu ve ortak hafızayla yaşayan büyük bir kültür hazinesi olduğunu anlatıyor.</p></div>
+    <div class="feature"><div><h3>Bir dilin içinde bir dünya saklıdır.</h3><p>Bir atasözü bize geçmişin deneyimini aktarır. Bir deyim anlatımımıza renk katar. Bir yöresel kelime yaşadığımız coğrafyanın izlerini taşır. Türkçenin zenginliği, bu parçaların bir araya gelmesiyle oluşur.</p></div><div class="seal">SÖZÜN<br>HAFIZASI</div></div>
+    <div class="grid">
+     <article class="exhibit"><div class="category">Sergi rotası</div><h3>7 salon, tek yolculuk</h3><p>Atasözleri, deyimler, kelime hazinesi, yöresel söyleyişler, edebiyat ve dil bilinci.</p></article>
+     <article class="exhibit"><div class="category">Nasıl gezilir?</div><h3>Keşfet ve etkileşime geç</h3><p>Soldaki salon adlarına tıkla. Kartları aç, örnekleri oku ve son salondaki mini bilgi yarışmasını çöz.</p></article>
+    </div>
+    <h3 style="color:var(--forest);font-size:26px;margin:24px 0 12px">💡 Bunu biliyor muydun?</h3>
+    <div class="grid">
+     <article class="exhibit fact"><div class="big">1000+ yıl</div><h3>İlk büyük sözlük</h3><p>Kaşgarlı Mahmud, 11. yüzyılda Divânü Lügati’t-Türk’ü yazarak Türkçenin ilk büyük sözlüğünü oluşturdu. İçinde atasözü ve şiir örnekleri de var.</p></article>
+     <article class="exhibit fact"><div class="big">+ek</div><h3>Bir kökten onlarca söz</h3><p>Türkçe eklemeli bir dildir: göz → gözlük → gözlükçü → gözlükçülük. Tek kökten yeni sözcükler türetilir.</p></article>
+     <article class="exhibit fact wide"><div class="big">1 sözcük = 1 cümle</div><h3>“Çekoslovakyalılaştıramadıklarımızdan mısınız?”</h3><p>Türkçenin eklemeli yapısını göstermek için sık verilen bu ünlü örnek, tek sözcüğün koca bir cümle kadar anlam taşıyabildiğini gösterir.</p></article>
+    </div>
+    <div class="quote-band"><p>“Söz ola kese savaşı, söz ola kestire başı.”</p><span>Yunus Emre'ye atfedilen söz</span></div>
+    <div class="grid"><article class="exhibit wide"><div class="category">Serginin ana fikri</div><h3>Türkçeyi tanımak, kültürümüzü tanımaktır.</h3><p>Bir toplumun sevinci, üzüntüsü, mizahı, bilgeliği ve dünyayı algılama biçimi diline yansır. Bu yüzden dilimizi öğrenmek ve özenle kullanmak kültürel mirasımıza sahip çıkmanın yollarından biridir.</p></article></div>
+   </section>
+
+   <section class="room" id="atasozu">
+    <div class="room-heading"><div class="room-kicker">02 • Bilgelik odası</div><h2>Atasözleri Odası</h2><p>Atasözleri, uzun yılların gözlem ve deneyimlerinden doğan; öğüt veren, yol gösteren, çoğu zaman mecazlı ve kalıplaşmış sözlerdir.</p></div>
+    <div class="feature"><div><h3>Az sözle çok şey anlatmak</h3><p>Atasözleri kuşaktan kuşağa aktarılır. İçlerinde çalışma, sabır, dayanışma, tutumluluk ve insan ilişkileri hakkında ortak deneyimler bulunur.</p></div><div class="seal">ATA<br>SÖZÜ</div></div>
+    <h3 style="color:var(--forest);font-size:28px;margin:8px 0 6px">💎 Hazine Sandığı: Nadir Atasözleri</h3>
+    <p style="color:var(--muted);font-size:14px;line-height:1.7;margin:0 0 14px">Dilimizin sandıkta saklanan sözleri. Kartlara dokun, nerede kullanıldığını gör.</p>
+    <div class="grid" id="rareGrid"></div><div class="feature" style="margin-top:18px"><div><h3>Bir söz çek, bir anlam keşfet</h3><p id="randSoz">Düğmeye bas: nadir bir atasözü seni bekliyor.</p><button class="primary" style="margin-top:12px;background:var(--forest);color:#fff9e9" onclick="randomProverb()">🎲 Bana bir söz getir</button></div><div class="seal">SÖZ<br>KAPISI</div></div>
+    <div class="quote-band"><p>Atasözleri, geçmişin bugüne bıraktığı kısa ve güçlü öğütlerdir.</p><span>Sözlü kültür mirasımız</span></div>
+   </section>
+
+   <section class="room" id="deyim">
+    <div class="room-heading"><div class="room-kicker">03 • Anlatım sokağı</div><h2>Deyimler Sokağı</h2><p>Deyimler, bir durumu, duyguyu veya davranışı etkili biçimde anlatan kalıplaşmış söz gruplarıdır. Çoğu zaman gerçek anlamlarından uzaklaşarak mecaz anlam kazanırlar.</p></div>
+    <div class="feature"><div><h3>Sözün resim çizen hâli</h3><p>Etekleri zil çalmaz, kimse gözden düşmez; ama ne demek istediğimizi anında anlarız. Çünkü deyimler, düşünceyi resimle anlatır.</p></div><div class="seal">DEYİM</div></div>
+    <div class="grid" id="idiGrid"></div>
+    <h3 style="color:var(--forest);font-size:26px;margin:28px 0 6px">🃏 Çevir, anlamını gör</h3>
+    <p style="color:var(--muted);font-size:14px;line-height:1.7;margin:0">Karta dokun: deyimin resmi ile gerçek anlamı yer değiştirsin.</p>
+    <div class="flips" id="flips"></div>
+    <div class="quiz" id="duel"><h3>⚔️ Deyim Düellosu</h3><p style="font-size:13px;color:var(--muted)">Beş deyim, beş soru. Anlamını bulabilecek misin?</p><div id="duelQ" style="font-family:'Playfair Display',Georgia,serif;font-size:21px;color:var(--red);margin:12px 0;line-height:1.35"></div><div class="answers" id="duelA" style="flex-direction:column;align-items:stretch"></div><div class="feedback" id="duelF"></div><div id="duelS" style="font-weight:700;color:var(--forest);margin-top:8px"></div></div>
+    <div class="quote-band"><p>“Deyimler, dilin gözle görülmeyen resimleridir.”</p><span>Sözün görsel hafsızası</span></div>
+   </section>
+
+   <section class="room" id="kelime">
+    <div class="room-heading"><div class="room-kicker">04 • Kelime müzesi</div><h2>Kelime Hazinesi</h2><p>Türkçenin söz varlığı tarih boyunca farklı dönemlerden, kültürlerden ve yaşam biçimlerinden beslenmiştir. Bugün daha az kullandığımız bazı kelimeler de bu zengin tarihin izlerini taşır.</p></div>
+    <div class="feature"><div><h3>Her kelime bir zaman kapsülü</h3><p>Kelimeler yalnızca anlam taşımaz; geçmişteki yaşamı, düşünceyi ve estetik anlayışı da yansıtır. Eski metinlerde karşılaştığımız sözcükleri öğrenmek dilimizin tarihî katmanlarını tanımamıza yardımcı olur.</p></div><div class="seal">KELİME<br>HAZİNESİ</div></div>
+    <div class="grid">
+     <article class="exhibit"><div class="category">Duygu</div><h3>Müşfik</h3><p>Şefkatli, sevecen, merhametli.</p><blockquote>Müşfik tavrıyla herkese destek oldu.</blockquote></article>
+     <article class="exhibit"><div class="category">Görünüş</div><h3>Mütebessim</h3><p>Gülümseyen, güler yüzlü.</p><blockquote>Mütebessim yüzüyle bizi karşıladı.</blockquote></article>
+     <article class="exhibit"><div class="category">Hatıra</div><h3>Yadigâr</h3><p>Bir kişiyi veya olayı hatırlatan şey; hatıra.</p><blockquote>Bu saat, dedemden yadigâr kaldı.</blockquote></article>
+     <article class="exhibit"><div class="category">Değer</div><h3>Nadide</h3><p>Az bulunan, değerli ve eşsiz.</p><blockquote>Kütüphanede nadide bir el yazması eser vardı.</blockquote></article>
+     <article class="exhibit"><div class="category">Süreklilik</div><h3>Payidar</h3><p>Kalıcı, varlığını sürdüren.</p><blockquote>İyilik ve dostluk payidar olsun.</blockquote></article>
+     <article class="exhibit"><div class="category">Zorluk</div><h3>Müşkül</h3><p>Güç, zor; çözülmesi kolay olmayan.</p><blockquote>Karşılaştığımız müşkülü birlikte çözdük.</blockquote></article>
+     <article class="exhibit"><div class="category">İletişim</div><h3>Şifahen</h3><p>Sözlü olarak, ağızdan.</p><blockquote>Bilgileri şifahen aktardı.</blockquote></article>
+     <article class="exhibit"><div class="category">Yolculuk</div><h3>Serüven</h3><p>Macera; heyecanlı ve ilginç olaylar dizisi.</p><blockquote>Kitap okumak, yeni dünyalara açılan bir serüvendir.</blockquote></article>
+    </div>
+    <div class="quote-band"><p>Kelime hazinemiz büyüdükçe dünyayı anlatma gücümüz de büyür.</p><span>Türkçenin söz varlığı</span></div>
+   </section>
+
+   <section class="room" id="yore">
+    <div class="room-heading"><div class="room-kicker">05 • Anadolu'nun sesleri</div><h2>Yöresel Sözcükler</h2><p>Anadolu'nun her köşesinde dil, yerel yaşamla birlikte renklenir. Ağız özellikleri; ses, söyleyiş ve kelime bakımından çeşitlilik gösterir. Bu farklılıklar dilimizin canlı kültürel mirasıdır.</p></div>
+    <div class="feature"><div><h3>Bir coğrafya, binlerce söyleyiş</h3><p>Yöresel kelimeler aile içinde, pazarda, tarlada, yaylada ve günlük sohbetlerde yaşar. Aynı kelime farklı yerlerde başka anlamlara gelebilir; bu yüzden yerel kullanımı kaynağıyla birlikte öğrenmek önemlidir.</p></div><div class="seal">ANADOLU'NUN<br>SESLERİ</div></div>
+    <div class="region-list">
+     <div class="region"><b>Karadeniz</b>Yöre ağızlarında “uşak” sözü bazı yerlerde çocuk veya genç anlamında seslenme sözü olarak kullanılır.</div>
+     <div class="region"><b>İç Anadolu</b>Bazı yörelerde “göce” sözcüğü kırılmış tahıl veya buğday ürünü için kullanılır.</div>
+     <div class="region"><b>Güneydoğu Anadolu</b>“Hele” sözü konuşmanın bağlamına göre “bir dur”, “önce” veya “bakalım” gibi anlamlar katabilir.</div>
+     <div class="region"><b>Ege</b>Yerel söyleyişlerde günlük yaşam, tarım, deniz ve zeytincilik çevresinde gelişmiş çok sayıda yöresel kelime bulunur.</div>
+    </div>
+    <div class="mapbox"><h3>Bu bölümü kendi çevrenizle zenginleştirin</h3><p>Ailenizden, komşularınızdan veya büyüklerinizden duyduğunuz üç yöresel kelimeyi not edin. Kelimenin hangi il/ilçede kullanıldığını, anlamını ve örnek cümlesini ekleyin. Böylece serginiz yaşayan bir sözlü tarih çalışmasına dönüşür.</p><p><strong>Derleme kartı örneği:</strong> Kelime: ______ • Kullanıldığı yer: ______ • Anlamı: ______ • Örnek cümle: ______ • Kaynak kişi: ______</p></div>
+   </section>
+
+   <section class="room" id="edebiyat">
+    <div class="room-heading"><div class="room-kicker">06 • Edebiyat konağı</div><h2>Edebiyatımızın İzinde</h2><p>Şairler, ozanlar ve yazarlar Türkçenin anlatım gücünü eserleriyle göstermiş; yaşadıkları dönemin duygularını, düşüncelerini ve toplum hayatını kelimelere dönüştürmüştür.</p></div>
+    <div class="timeline">
+     <article class="timeitem"><h3>Yunus Emre • Sevgi ve insanlık dili</h3><p>13. yüzyıl sonu ile 14. yüzyıl başlarında yaşadığı kabul edilen Yunus Emre, sade ve içten Türkçesiyle sevgi, hoşgörü ve insanı anlama düşüncesini şiirlerinde işledi.</p></article>
+     <article class="timeitem"><h3>Karacaoğlan • Halkın sesi</h3><p>Halk şiirinin önemli ozanlarından Karacaoğlan; doğayı, sevgiyi ve günlük yaşamı canlı, akıcı bir söyleyişle anlattı. Şiirleri sözlü gelenekle geniş kitlelere ulaştı.</p></article>
+     <article class="timeitem"><h3>Âşık Veysel • Sazın ve sözün buluşması</h3><p>20. yüzyıl halk ozanı Âşık Veysel; insan, doğa, dostluk ve yaşam üzerine şiirleriyle halk şiiri geleneğini sürdürdü.</p></article>
+     <article class="timeitem"><h3>Mehmet Âkif Ersoy • Millî ses</h3><p>İstiklâl Marşı'nın şairi Mehmet Âkif Ersoy, bağımsızlık, inanç, emek ve toplum meselelerini güçlü bir dille eserlerine taşıdı.</p></article>
+     <article class="timeitem"><h3>Yaşar Kemal • Anadolu'nun anlatısı</h3><p>Yaşar Kemal, Anadolu insanını, doğayı ve toplumsal yaşamı zengin betimlemelerle edebiyatımıza taşıdı. Eserleri Türkçenin anlatım olanaklarını gösteren önemli örneklerdendir.</p></article>
+    </div>
+    <div class="quote-band"><p>Edebiyat, dilin yalnızca ne söylediğini değil, nasıl hissettirdiğini de gösterir.</p><span>Şiirden romana, sözlü gelenekten yazılı kültüre</span></div>
+   </section>
+
+   <section class="room" id="gelecek">
+    <div class="room-heading"><div class="room-kicker">07 • Geleceğe miras</div><h2>Türkçeyi Yaşatmak</h2><p>Dil, kullanıldıkça gelişir ve kuşaktan kuşağa aktarılır. Türkçeye sahip çıkmak; onu doğru öğrenmek, özenle kullanmak ve yeni kuşaklara sevdirmekle mümkündür.</p></div>
+    <div class="grid">
+     <article class="exhibit"><div class="category">Okuma kültürü</div><h3>Çok okuyalım</h3><p>Roman, şiir, deneme ve bilimsel metinlerle kelime hazinemizi geliştirelim.</p></article>
+     <article class="exhibit"><div class="category">Yazılı anlatım</div><h3>Özenli yazalım</h3><p>Yazım ve noktalama kurallarına dikkat edelim; düşüncelerimizi açık ve anlaşılır aktaralım.</p></article>
+     <article class="exhibit"><div class="category">Sözlü anlatım</div><h3>Güzel konuşalım</h3><p>Kelimeleri yerinde kullanalım, karşımızdakini dinleyelim ve anlatımımıza özen gösterelim.</p></article>
+     <article class="exhibit"><div class="category">Kültürel miras</div><h3>Yerel sözleri kaydedelim</h3><p>Aile büyüklerimizden öğrendiğimiz yöresel kelimeleri ve hikâyeleri unutulmadan paylaşalım.</p></article>
+    </div>
+    <div class="quiz">
+     <h3>Bilgini sınamaya hazır mısın?</h3>
+     <p style="font-size:13px;color:var(--muted)">Sergide öğrendiklerini üç kısa soruyla dene.</p>
+     <div class="question" data-answer="b"><p>1. “Bir mıh bir nal kurtarır, bir nal bir at kurtarır.” sözü hangi düşünceyi anlatır?</p><div class="answers"><button data-choice="a">Atlara bakmayı</button><button data-choice="b">Küçük görünen şeylerin büyük sonuçlar doğurabileceğini</button><button data-choice="c">Demircilik yapmayı</button></div><div class="feedback"></div></div>
+     <div class="question" data-answer="a"><p>2. “Havanda su dövmek” deyiminin anlamı nedir?</p><div class="answers"><button data-choice="a">Boşuna, sonuçsuz bir işle uğraşmak</button><button data-choice="b">Yemek hazırlamak</button><button data-choice="c">Su içmek</button></div><div class="feedback"></div></div>
+     <div class="question" data-answer="c"><p>3. Yöresel sözcükler bize öncelikle neyi gösterir?</p><div class="answers"><button data-choice="a">Bütün bölgelerin aynı konuştuğunu</button><button data-choice="b">Yalnızca yazım kurallarını</button><button data-choice="c">Bölgesel kültür ve söyleyiş çeşitliliğini</button></div><div class="feedback"></div></div>
+     <div id="score" style="font-weight:700;color:var(--forest);margin-top:12px"></div>
+    </div>
+    <div class="game" id="game">
+     <div class="game-tag">🎮 SON DURAK</div>
+     <h3>🛡️ Söz Nöbeti: Türkçeyi Koru!</h3>
+     <p class="game-sub">Cümlelere sızan yabancı sözcükleri yakala, Türkçe karşılığını süre dolmadan seç. 3 canın, 10 sorun var. Seri yaptıkça puanın katlanır!</p>
+     <div id="gStartBox"><button class="primary" onclick="gStart()">Nöbete başla ▶</button><div id="gBest" style="margin-top:10px;font-size:13px;color:#e9e3d4"></div></div>
+     <div id="gPlay" style="display:none"><div class="hud"><span id="gLives"></span><span>Puan: <b id="gScore">0</b></span><span id="gCombo"></span><span id="gNo"></span></div><div class="tbar"><i id="gBar"></i></div><div class="gsent" id="gSent"></div><div class="gopts" id="gOpts"></div><div class="gfb" id="gFb"></div></div>
+     <div id="gEnd" style="display:none"></div>
+    </div>
+    <div class="quote-band"><p>Türkçemizi sevelim, koruyalım, zenginleştirelim.</p><span>Geçmişimizin sesi • Geleceğimizin mirası</span></div>
+   </section>
+  </div>
+ </div>
+</main>
+<footer><h2>Türkçenin İzinde</h2><p>Dilimizin Zenginlikleri • İnteraktif Dijital Sergi<br>Her kelime bir iz, her söz bir miras, her kuşak bu mirasın taşıyıcısıdır.</p><p style="font-size:11px;color:#c6c0ae">Eğitim amaçlı hazırlanmıştır. Yöresel kelimelerin kullanımı bölgelere göre değişebilir; yerel derlemelerle zenginleştirilebilir.</p></footer>
+<div class="modal" id="aboutModal" onclick="if(event.target===this)closeAbout()"><div class="modal-card"><button class="close" onclick="closeAbout()" aria-label="Kapat">×</button><h2>Bu sergi hakkında</h2><p>“Türkçenin İzinde”, Türkçenin söz varlığını ve kültürel mirasını keşfetmek için hazırlanmış etkileşimli bir okul sergisidir. Yedi salon; atasözleri, deyimler, kelime hazinesi, yöresel söyleyişler, edebiyat ve dil bilinci başlıklarını işler.</p><p>Gezmek için salon adlarına tıklayın. Bazı kartlarda ek açıklamaları açabilir, son salonda mini bilgi yarışmasını çözebilirsiniz. Sergi, her cihazdan bağlantı veya QR kod ile açılabilir.</p></div></div>
+<script>
+const links=[...document.querySelectorAll('.room-link')],rooms=[...document.querySelectorAll('.room')],visited=new Set();
+function go(id){links.forEach(b=>b.classList.toggle('active',b.dataset.room===id));rooms.forEach(r=>r.classList.toggle('active',r.id===id));visited.add(id);document.getElementById('progress').style.width=(visited.size/7*100)+'%';document.getElementById('progressText').textContent=visited.size+' / 7 salon gezildi';window.scrollTo({top:0,behavior:'smooth'});}
+links.forEach(b=>b.addEventListener('click',()=>go(b.dataset.room)));
+function toggleCard(btn){const card=btn.closest('.exhibit');card.classList.toggle('open');btn.textContent=card.classList.contains('open')?'Ayrıntıyı gizle −':'Ayrıntıyı keşfet +';}
+function openAbout(){document.getElementById('aboutModal').classList.add('show')}
+function closeAbout(){document.getElementById('aboutModal').classList.remove('show')}
+document.querySelectorAll('.question').forEach(q=>{q.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{q.querySelectorAll('button').forEach(x=>x.classList.remove('chosen'));b.classList.add('chosen');const ok=b.dataset.choice===q.dataset.answer;q.querySelector('.feedback').textContent=ok?'✓ Doğru cevap!':'Tekrar düşün; sergideki ilgili bölüme göz atabilirsin.';q.querySelector('.feedback').style.color=ok?'#28704f':'#a94336';const done=[...document.querySelectorAll('.question')].filter(x=>x.querySelector('.feedback').textContent.startsWith('✓')).length;document.getElementById('score').textContent='Doğru cevap sayısı: '+done+'/3';}));});
+go('giris');
+
+const SITE_URL='https://claude.ai/artifact/9hAd3kt9XapwSk83UW64js';
+const ids=rooms.map(r=>r.id);
+rooms.forEach((r,i)=>{const n=document.createElement('div');n.className='roomnav';n.innerHTML=(i>0?'<button data-to="'+ids[i-1]+'">← '+links[i-1].textContent.replace(/^\d+\s*/,'')+'</button>':'<span></span>')+(i<ids.length-1?'<button data-to="'+ids[i+1]+'">'+links[i+1].textContent.replace(/^\d+\s*/,'')+' →</button>':'');r.appendChild(n);n.querySelectorAll('button').forEach(b=>b.onclick=()=>go(b.dataset.to))});
+const _go=go;go=function(id){_go(id);if(visited.size===7)document.getElementById('progressText').textContent='🎉 Söz Gezgini oldun!';try{history.replaceState(null,'','#'+id)}catch(e){}setTimeout(()=>document.querySelector('.progress-card').scrollIntoView({behavior:'smooth',block:'start'}),30)};
+function startTour(){go('giris')}
+const ICONS={giris:'✦',atasozu:'📜',deyim:'💬',kelime:'🗝️',yore:'🧭',edebiyat:'🪶',gelecek:'🌱'};
+rooms.forEach(r=>r.querySelectorAll('.exhibit:not(.fact)').forEach(e=>{const i=document.createElement('span');i.className='icon';i.textContent=ICONS[r.id]||'✦';e.prepend(i)}));
+const POOL=[['Anlayana sivrisinek saz, anlamayana davul zurna az.','Anlayan küçük işaretten çok şey çıkarır.'],['Koyunun bulunmadığı yerde keçiye Abdurrahman Çelebi derler.','Değerli olan yoksa sıradan olan baş tacı edilir.'],['Yalancının mumu yatsıya kadar yanar.','Yalan kısa sürede ortaya çıkar.'],['Tilkinin dönüp dolaşıp geleceği yer kürkçü dükkânıdır.','Hilekâr er geç hesabını verir.'],['Eşek hoşaftan ne anlar, ona yonca lazım.','Herkes kendi ihtiyacını anlar.'],['Mum dibine ışık vermez.','Işık tutan, en yakınını göremeyebilir.'],['Atın ölümü arpadan olsun.','Kötü sonuç kaçınılmazsa hoşa giden yoldan olsun.'],['Kel başa şimşir tarak.','Yersiz verilen değer ya da lüks.'],['Aç tavuk kendini arpa ambarında sanır.','İhtiyaç içindeki kişi hayalde her şeye sahip olur.'],['Çıkmayan candan umut kesilmez.','Yaşam sürdükçe umut da sürer.'],['Sinek küçüktür ama mide bulandırır.','Küçük bir kusur büyük sıkıntı yaratabilir.'],['Üzümünü ye, bağını sorma.','Faydayı gör, kaynağını kurcalama.']];
+const IDI=[
+['🐑','Boşuna emek','Pösteki saymak','Çok zor ve sonuçsuz bir işle uğraşmak.','Bütün gün aynı konuyu tartıştık, resmen pösteki saydık.'],
+['🕌','Abartma','Habbeyi kubbe yapmak','Küçük bir olayı gereğinden fazla büyütmek.','Küçük bir yanlış anlaşılmayı habbeyi kubbe yaptı.'],
+['🌫️','Kayboluş','Sırra kadem basmak','Birdenbire ortadan kaybolmak.','Anahtarım sırra kadem bastı, her yere baktım.'],
+['🖋️','Bilgi','Mürekkep yalamış olmak','Öğrenim görmüş, bilgili olmak.','Okulu bitirmese de mürekkep yalamış gibi bilgiliydi.'],
+['🪢','Bahane','İpe un sermek','Bir işi yapmamak için bahaneler bulmak.','Görevini tamamlamak yerine sürekli ipe un seriyordu.'],
+['📖','Boş söz','Maval okumak','Gerçek dışı, boş sözler söylemek.','Gecikme sebebini sorunca bana maval okudu.'],
+['🥣','Sonuçsuz iş','Havanda su dövmek','Boşuna çabalamak, sonuçsuz iş yapmak.','Dinlemeyen birine anlatmak havanda su dövmektir.'],
+['🔬','Titizlik','Kılı kırk yarmak','En küçük ayrıntıyı bile dikkatle incelemek.','Ödevi kılı kırk yararak kontrol etti.'],
+['🚫','İnat','Nuh deyip peygamber dememek','İnatla kararından vazgeçmemek.','Ne söylesek Nuh deyip peygamber demedi.'],
+['🕳️','Utanç','Yerin dibine geçmek','Çok utanmak.','Herkesin içinde adı yanlış söylenince yerin dibine geçti.']];
+const DEY=IDI.map(d=>[d[0],d[2],d[3]]);
+const ig=document.getElementById('idiGrid');IDI.forEach(d=>{const e=document.createElement('article');e.className='exhibit';e.innerHTML='<span class="icon">'+d[0]+'</span><div class="category">'+d[1]+'</div><h3>'+d[2]+'</h3><p>'+d[3]+'</p><blockquote>'+d[4]+'</blockquote>';ig.appendChild(e)});
+;
+const fl=document.getElementById('flips');DEY.forEach(d=>{const b=document.createElement('button');b.className='flip';b.innerHTML='<div class="flip-in"><div class="face f"><span>'+d[0]+'</span><b>'+d[1]+'</b></div><div class="face b">'+d[2]+'</div></div>';b.onclick=()=>b.classList.toggle('on');fl.appendChild(b)});
+let dq=[],di=0,ds=0;const shuf=a=>[...a].sort(()=>Math.random()-.5);
+function duelStart(){dq=shuf(DEY).slice(0,5);di=0;ds=0;duelNext()}
+function duelNext(){const q=document.getElementById('duelQ'),a=document.getElementById('duelA'),f=document.getElementById('duelF'),s=document.getElementById('duelS');f.textContent='';a.innerHTML='';
+if(di>=dq.length){q.textContent='Düello bitti! '+ds+' / '+dq.length;s.textContent='';f.style.color='#173b37';f.textContent=ds>=4?'🏆 Deyim ustası!':'Bir tur daha dene, yaparsın!';const r=document.createElement('button');r.textContent='Yeniden oyna ↻';r.onclick=duelStart;a.appendChild(r);return}
+const c=dq[di];const opts=shuf([c[2],...shuf(DEY.filter(x=>x!==c)).slice(0,2).map(x=>x[2])]);q.textContent=(di+1)+'/'+dq.length+'  '+c[0]+' '+c[1];s.textContent='Puan: '+ds;
+opts.forEach(o=>{const b=document.createElement('button');b.textContent=o;b.onclick=()=>{const ok=o===c[2];if(ok)ds++;f.textContent=ok?'✓ Doğru!':'Doğrusu: '+c[2];f.style.color=ok?'#28704f':'#a94336';a.querySelectorAll('button').forEach(x=>x.disabled=true);setTimeout(()=>{di++;duelNext()},1400)};a.appendChild(b)})}
+duelStart();
+if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.08});document.querySelectorAll('.exhibit,.timeitem,.quote-band,.feature').forEach(e=>{e.classList.add('reveal');io.observe(e)})}
+const RARE=[
+['Ağaca çıkan keçinin dala bakan oğlağı olur.','Büyüklerin davranışları küçüklere örnek olur.','Okumayı seven bir aileyi gören çocuk da kitaba yönelir.'],
+['Abanın kadri yağmurda bilinir.','Bir şeyin değeri, ona ihtiyaç duyulduğunda anlaşılır.','Yağmur başlayınca abanın kıymeti anlaşılır; destek de zor günde değer bulur.'],
+['Arı bal alacak çiçeği bilir.','İşini bilen kişi, nereden fayda sağlayacağını da bilir.','İyi bir araştırmacı hangi kaynaktan yararlanacağını bilir.'],
+['Bir mıh bir nal kurtarır, bir nal bir at kurtarır.','Küçük görünen şeyler büyük sonuçlar doğurabilir.','Tek bir vidanın eksikliği koca bir düzeneği bozabilir.'],
+['Çobanın gönlü olursa tekeden süt çıkarır.','İsteyen ve gayret eden kişi zor işleri bile başarabilir.','İstekli bir öğrenci en zor konuyu bile çözer.'],
+['Gölgeyi hoş gören tekneyi boş görür.','Rahatına düşkün olan kişi işini gerektiği gibi yapamaz.','Hep gölgede dinlenen bir çiftçinin tarlası boş kalır.'],
+['Karga kekliği taklit edeyim derken kendi yürüyüşünü unutmuş.','Başkalarını taklit etmeye çalışan kişi kendi özelliklerini kaybedebilir.','Birini taklit ede ede kendi tarzını unutan kişi için söylenir.'],
+['Koyunun bulunmadığı yerde keçiye Abdurrahman Çelebi derler.','Daha iyisi bulunmadığında sıradan olan şey değerli görülür.','Tek kitapçının olduğu yerde en sıradan kitap bile çok aranır.']];
+const rg=document.getElementById('rareGrid');RARE.forEach(r=>{const e=document.createElement('article');e.className='exhibit rare';e.innerHTML='<span class="icon">💎</span><span class="badge">NADİR SÖZ</span><h3>'+r[0]+'</h3><p>'+r[1]+'</p><button class="expand" onclick="toggleCard(this)">Nerede kullanırız? +</button><div class="detail">'+r[2]+'</div>';rg.appendChild(e)});
+POOL.length=0;RARE.forEach(r=>POOL.push([r[0],r[1]]));
+const GW=[
+['Sunum bitince herkesten ‹feedback› istedik.','geri bildirim',['geri sayım','ön bilgi'],'Türkçesi: geri bildirim.'],
+['Projenin ‹deadline› yaklaşıyor.','son teslim tarihi',['başlama saati','ara tatil'],'Türkçesi: son teslim tarihi.'],
+['‹Update› yapınca uygulama hızlandı.','Güncelleme',['Silme','Yedekleme'],'Türkçesi: güncelleme.'],
+['Sergiye giden ‹link› şurada.','bağlantı',['kayıt','dosya'],'Türkçesi: bağlantı.'],
+['Yarınki ders ‹online› yapılacak.','çevrim içi',['açık hava','çevrim dışı'],'Türkçesi: çevrim içi.'],
+['Dosyayı hemen ‹download et›.','indir',['yükle','sil'],'Türkçesi: indirmek.'],
+['Çekilişte isimler ‹random› seçildi.','rastgele',['sıralı','düzenli'],'Türkçesi: rastgele.'],
+['Sosyal medyadaki bu ‹trend› geçici.','eğilim',['durgunluk','gelenek'],'Türkçesi: eğilim.'],
+['Bugün ‹mood› çok iyi.','ruh hâli',['yol haritası','cümle'],'Türkçesi: ruh hâli.'],
+['Yarın okulda ‹meeting› var.','toplantı',['yemek molası','gezi'],'Türkçesi: toplantı.'],
+['Raporu bir kez ‹check et›.','kontrol et',['kopyala','imzala'],'Türkçesi: kontrol etmek.'],
+['Arkadaşlarımdan çok ‹support› gördüm.','destek',['engel','gösteri'],'Türkçesi: destek.']];
+let G={};const gid=x=>document.getElementById(x);
+function gBest(){try{const b=localStorage.getItem('snBest');gid('gBest').textContent=b?'🏅 En yüksek puanın: '+b:''}catch(e){}}gBest();
+function gStart(){G={q:shuf(GW).slice(0,10),i:0,lives:3,score:0,combo:0,right:0,t:0,iv:null,lock:false};gid('gStartBox').style.display='none';gid('gEnd').style.display='none';gid('gPlay').style.display='block';gNext()}
+function gHud(){gid('gLives').textContent='❤️'.repeat(G.lives)+'🖤'.repeat(3-G.lives);gid('gScore').textContent=G.score;gid('gCombo').textContent=G.combo>1?'🔥 x'+G.combo:''}
+function gNext(){if(G.lives<=0||G.i>=G.q.length){gEnd();return}G.lock=false;const w=G.q[G.i];gid('gNo').textContent=(G.i+1)+' / '+G.q.length;gid('gSent').innerHTML=w[0].replace(/‹(.*?)›/,'<span class="foreign">$1</span>');gid('gFb').textContent='';const o=gid('gOpts');o.innerHTML='';shuf([w[1],...w[2]]).forEach(t=>{const b=document.createElement('button');b.textContent=t;b.onclick=()=>gAns(t);o.appendChild(b)});G.t=100;gid('gBar').style.width='100%';gHud();clearInterval(G.iv);G.iv=setInterval(()=>{G.t-=1;gid('gBar').style.width=G.t+'%';if(G.t<=0)gAns(null)},100)}
+function gAns(t){if(G.lock)return;G.lock=true;clearInterval(G.iv);const w=G.q[G.i],ok=t===w[1];gid('gOpts').querySelectorAll('button').forEach(b=>{b.disabled=true;if(b.textContent===w[1])b.classList.add('ok');else if(b.textContent===t)b.classList.add('no')});gid('gSent').innerHTML=w[0].replace(/‹(.*?)›/,'<span class="good">'+w[1]+'</span>');
+if(ok){G.combo++;G.right++;G.score+=10+Math.min(G.combo,5)*2+Math.ceil(G.t/20);gid('gFb').textContent='✓ Doğru! '+w[3]}else{G.combo=0;G.lives--;gid('gFb').textContent=(t===null?'⏰ Süre doldu. ':'✗ Olmadı. ')+w[3]}
+gHud();setTimeout(()=>{G.i++;gNext()},1900)}
+function gEnd(){clearInterval(G.iv);gid('gPlay').style.display='none';const r=G.right,rank=r>=9?'🏆 Dil Bekçisi':r>=6?'🛡️ Söz Nöbetçisi':r>=3?'🌱 Dil Çırağı':'📖 Okuma Zamanı';let best=G.score;try{const b=+localStorage.getItem('snBest')||0;if(G.score>b)localStorage.setItem('snBest',G.score);else best=b}catch(e){}
+const e=gid('gEnd');e.style.display='block';e.innerHTML='<div class="gend"><div class="rank">'+rank+'</div><p><b>'+G.score+' puan</b> • '+r+' doğru • En yüksek: '+best+'</p><p>Yabancı sözcükler yasak değil; ama Türkçesi varken onu unutmak, dilimizin kendi sözlerini sessizce kaybetmesi demek. Bugün bir tanesini bilerek kullan!</p><div class="hero-actions" style="justify-content:center"><button class="primary" onclick="gStart()">Yeniden oyna ↻</button><button class="secondary" id="gShare">Sonucumu paylaş</button></div></div>';
+gid('gShare').onclick=()=>{const m='Türkçenin İzinde sergisinde Söz Nöbeti’nde '+G.score+' puan aldım! Sen de dene: '+SITE_URL;try{navigator.clipboard.writeText(m).then(()=>gid('gShare').textContent='Kopyalandı ✓',()=>gid('gShare').textContent='Kopyalanamadı')}catch(x){gid('gShare').textContent='Kopyalanamadı'}};gBest()}
+let lastP=-1;function randomProverb(){let i;do{i=Math.floor(Math.random()*POOL.length)}while(i===lastP);lastP=i;document.getElementById('randSoz').innerHTML='<b style="font-family:Playfair Display,Georgia,serif;font-size:21px;color:#a94336">“'+POOL[i][0]+'”</b><br>'+POOL[i][1]}
+addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(ids.includes(h))_go(h)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeAbout()}});
+if(ids.includes(location.hash.slice(1)))go(location.hash.slice(1));
+</script>
+</body>
+</html>
